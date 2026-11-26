@@ -1,0 +1,677 @@
+
+Table "fnce"."analisis_eolica" {
+  "id_analisis_eolica" INTEGER [not null]
+  "nombre" "VARCHAR2 (200 CHAR)"
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "id_escenario" INTEGER [not null]
+
+  Indexes {
+    id_analisis_eolica [pk, name: "pk_analisis_eolica"]
+  }
+}
+
+Table "fnce"."analisis_eolica_parametro" {
+  "id_analisis_eolica_parametro" INTEGER
+  "nombre" "VARCHAR2 (250)"
+  "fecha_desde" DATE
+  "id_parametro" INTEGER [not null]
+  "id_analisis_eolica" INTEGER [not null]
+
+  Indexes {
+    id_analisis_eolica [pk, name: "pk_analisis_eolica_parametro"]
+  }
+}
+
+Table "fnce"."area_electrica" {
+  "id_area_electrica" INTEGER [not null]
+  "nombre_area" "VARCHAR2 (200 CHAR)"
+  "id_area_padre" INTEGER [not null]
+
+  Indexes {
+    id_area_electrica [pk, name: "pk_area_electrica"]
+  }
+}
+
+Table "fnce"."barra" {
+  "id_barra" INTEGER [not null]
+  "nombre_barra" "VARCHAR2 (250 CHAR)"
+  "codigo_barra" "VARCHAR2 (10 CHAR)"
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "id_nivel_tension" INTEGER [not null]
+  "ubicacion" geometry
+  "tension_nominal_kv" INTEGER
+  "id_subestacion" INTEGER [not null]
+
+  Indexes {
+    id_barra [pk, name: "pk_barra"]
+  }
+}
+
+Table "fnce"."carga" {
+  "id_carga" INTEGER [not null]
+  "codigo_carga" "VARCHAR2 (10 CHAR)"
+  "nombre_carga" "VARCHAR2 (250 CHAR)"
+  "categoria_carga" "VARCHAR2 (50 CHAR)"
+  "potencia_referencia_mw" "NUMBER (10,5)"
+  "id_barra" INTEGER [not null]
+
+  Indexes {
+    id_carga [pk, name: "pk_carga"]
+  }
+}
+
+Table "fnce"."categoria_escala" {
+  "id_categoria_escala" INTEGER [not null]
+  "nombre" "VARCHAR2 (50 CHAR)" [not null]
+
+  Indexes {
+    id_categoria_escala [pk, name: "pk_categoria_escala"]
+  }
+}
+
+Table "fnce"."categoria_generacion" {
+  "id_categoria_generacion" INTEGER [not null]
+  "nombre" "VARCHAR2 (50 CHAR)" [not null]
+
+  Indexes {
+    id_categoria_generacion [pk, name: "pk_categoria_generacion"]
+  }
+}
+
+Table "fnce"."compensacion_shunt" {
+  "id_compensacion_shunt" INTEGER [not null]
+  "codigo_compensacion" "VARCHAR2 (10 CHAR)"
+  "nombre_compensacion" "VARCHAR2 (200 CHAR)"
+  "tipo_compensacion" "VARCHAR2 (20 CHAR)"
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "potencia_reactiva_nominal_mvar" "NUMBER (10,5)"
+  "susceptancia_modelo" "NUMBER (10,5)"
+  "id_barra" INTEGER [not null]
+
+  Indexes {
+    id_compensacion_shunt [pk, name: "pk_compensacion_shunt"]
+  }
+}
+
+Table "fnce"."costo" {
+  "id_costo" INTEGER [not null]
+  "fecha" DATE
+  "n_valor" "NUMBER (15,5)"
+  "id_escenario" INTEGER [not null]
+  "ano" INTEGER
+  "id_parametro" INTEGER [not null]
+
+  Indexes {
+    id_costo [pk, name: "pk_costo"]
+  }
+}
+
+Table "fnce"."curva" {
+  "id_curva" INTEGER [not null]
+  "nombre" "VARCHAR2 (250 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "norma" "VARCHAR2 (250 CHAR)"
+  "id_tipo_curva" INTEGER [not null]
+  "id_tipo_aerogenerador" INTEGER [not null]
+  "id_variable_x" INTEGER [not null]
+  "id_variable_y" INTEGER [not null]
+
+  Indexes {
+    id_curva [pk, name: "pk_curva"]
+  }
+}
+
+Table "fnce"."curva_dato" {
+  "id_curva_dato" INTEGER [not null]
+  "id_curva" INTEGER [not null]
+  "dato_x" "NUMBER (20,10)"
+  "dato_y" "NUMBER (20,10)"
+
+  Indexes {
+    id_curva_dato [pk, name: "pk_curva_dato"]
+  }
+}
+
+Table "fnce"."dimension" {
+  "id_dimension" INTEGER [not null]
+  "nombre" "VARCHAR2 (200 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "variable" "VARCHAR2 (100 CHAR)" [note: 'Es como se codifica una dimensión para poder ser accedida por otros software']
+
+  Indexes {
+    id_dimension [pk, name: "pk_dimension"]
+  }
+}
+
+Table "fnce"."distribucion_eolica" {
+  "id_distribucion_eolica" INTEGER [not null]
+  "nombre" "VARCHAR2 (200 CHAR)"
+  "id_zona_factible" INTEGER [not null]
+  "id_tipo_aerogenerador" INTEGER [not null]
+  "id_analisis_eolica" INTEGER [not null]
+  "punto" geometry
+  "id_parque_eolico" INTEGER [not null]
+  "id_scenario" INTEGER [not null]
+
+  Indexes {
+    id_distribucion_eolica [pk, name: "pk_distribucion_eolica"]
+  }
+}
+
+Table "fnce"."escenario" {
+  "id_escenario" INTEGER [not null]
+  "nombre" "VARCHAR2 (250 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "fecha_escenario" DATE
+  "id_usuario" INTEGER [not null]
+
+  Indexes {
+    id_escenario [pk, name: "pk_escenario"]
+  }
+}
+
+Table "fnce"."escenario_parametro" {
+  "id_escenario_parametros" INTEGER [not null]
+  "fecha_inicio" DATE
+  "id_parametro" INTEGER [not null]
+  "id_escenario" INTEGER [not null]
+  "valor_texto" "VARCHAR2 (1000 CHAR)"
+  "valor_numerico" "NUMBER (15,5)"
+
+  Indexes {
+    id_escenario_parametros [pk, name: "pk_escenario_parametro"]
+  }
+}
+
+Table "fnce"."estado" {
+  "id_estado" INTEGER [not null]
+  "nombre_estado" "VARCHAR2 (250 CHAR)"
+
+  Indexes {
+    id_estado [pk, name: "pk_estado"]
+  }
+}
+
+Table "fnce"."estado_parque_eolico" {
+  "id_estado_parque_eolico" INTEGER [not null]
+  "id_parque_eolico" INTEGER [not null]
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "nombre" "VARCHAR2 (200 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "id_estado" INTEGER [not null]
+
+  Indexes {
+    id_estado_parque_eolico [pk, name: "pk_estado_parque_eolico"]
+  }
+}
+
+Table "fnce"."linea_transmision" {
+  "id_linea_transmision" INTEGER [not null]
+  "nombre_linea" "VARCHAR2 (200 CHAR)"
+  "circuito" INTEGER
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "tension_nominal_modelo" INTEGER
+  "longitud_km" "NUMBER (10,5)"
+  "resistencia_ohm" "NUMBER (10,5)"
+  "reactancia_ohm" "NUMBER (10,5)"
+  "susceptancia_siemens" "NUMBER (15,10)"
+  "potencia_nominal" "NUMBER (10,5)"
+  "geometria" geometry
+  "id_barra1" INTEGER [not null]
+  "id_barra2" INTEGER [not null]
+
+  Indexes {
+    id_linea_transmision [pk, name: "pk_linea_transmision"]
+  }
+}
+
+Table "fnce"."magnitud" {
+  "id_magnitud" INTEGER [not null]
+  "magnitud" "VARCHAR2 (250 CHAR)"
+  "simbolo" "VARCHAR2 (10 CHAR)"
+
+  Indexes {
+    id_magnitud [pk, name: "pk_magnitud"]
+  }
+}
+
+Table "fnce"."nivel_tension" {
+  "id_nivel_tension" INTEGER [not null]
+  "nivel_tension" "NUMBER (5,2)"
+
+  Indexes {
+    id_nivel_tension [pk, name: "pk_nivel_tension"]
+  }
+}
+
+Table "fnce"."parametro" {
+  "id_parametro" INTEGER [not null]
+  "parametro" "VARCHAR2 (200 CHAR)"
+  "variable" "VARCHAR2 (200 CHAR)"
+  "valor_texto" "VARCHAR2 (1000 CHAR)"
+  "valor_numerico" "NUMBER (10,5)"
+  "unidad" "VARCHAR2 (100 CHAR)"
+  "fuente" "VARCHAR2 (1000 CHAR)"
+  "rango_inferior" "NUMBER (10,5)"
+  "rango_superior" "NUMBER (10,5)"
+  "id_dimension" INTEGER [not null]
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "ecuacion" "VARCHAR2 (4000 CHAR)"
+
+  Indexes {
+    id_parametro [pk, name: "pk_parametro"]
+  }
+}
+
+Table "fnce"."parque_eolico" {
+  "id_parque_eolico" INTEGER [not null]
+  "nombre" "VARCHAR2 (200 CHAR)"
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "numero_unidades" INTEGER
+  "potencia_nominal_mw" "NUMBER (10,2)"
+  "id_planta_generacion" INTEGER
+  "id_proyecto" INTEGER [not null]
+
+  Indexes {
+    id_parque_eolico [pk, name: "pk_parque_eolico"]
+  }
+}
+
+Table "fnce"."planta" {
+  "id_planta" INTEGER [not null]
+  "nombre_planta" "VARCHAR2 (200 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "fecha_inicio" DATE
+  "fecha_fin" DATE
+  "id_tecnologia_generacion" INTEGER [not null]
+  "ubicacion" geometry
+  "id_tipo_recurso" INTEGER [not null]
+  "potencia_nominal_mw" INTEGER
+  "potencia_minima_mw" INTEGER
+  "codigo" "VARCHAR2 (15 CHAR)"
+  "numero_unidades" INTEGER
+  "id_estado" INTEGER [not null]
+  "id_categoria_generacion" INTEGER [not null]
+  "id_categoria_escala" INTEGER [not null]
+
+  Indexes {
+    id_planta [pk, name: "pk_planta"]
+  }
+}
+
+Table "fnce"."planta_area" {
+  "id_planta_area" INTEGER [not null]
+  "fecha_desde" DATE
+  "fecha_hasta" DATE
+  "poligono" geometry
+  "id_planta" INTEGER [not null]
+  "tipo_area" "VARCHAR2 (100 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+
+  Indexes {
+    id_planta_area [pk, name: "pk_planta_area"]
+  }
+}
+
+Table "fnce"."prefijo_si" {
+  "id_prefijo" INTEGER [not null]
+  "prefijo" "VARCHAR2 (10)"
+  "simbolo" "VARCHAR2 (2)"
+  "exponente" SMALLINT
+
+  Indexes {
+    id_prefijo [pk, name: "pk_prefijo_si"]
+  }
+}
+
+Table "fnce"."resultado" {
+  "id_resultados" INTEGER [not null]
+  "fecha" DATE
+  "n_valor" "NUMBER (15,5)"
+  "id_escenario" INTEGER [not null]
+  "id_parametros" INTEGER [not null]
+
+  Indexes {
+    id_resultados [pk, name: "pk_resultado"]
+  }
+}
+
+Table "fnce"."subestacion" {
+  "id_subestacion" INTEGER [not null]
+  "nombre_subestacion" "VARCHAR2 (200 CHAR)"
+  "fecha_inicio" DATE
+  "fecha_fin" DATE
+  "id_area" INTEGER [not null]
+
+  Indexes {
+    id_subestacion [pk, name: "pk_subestacion"]
+  }
+}
+
+Table "fnce"."tecnologia_generacion" {
+  "id_tecnologia_generacion" INTEGER [not null]
+  "nombre_tecnologia" "VARCHAR2 (200 CHAR)" [note: 'Planta eólica, cogeneración geotérmica, planta binaria']
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "id_tecnologia_generacion_padre" INTEGER
+
+  Indexes {
+    id_tecnologia_generacion [pk, name: "pk_tecnologia_generacion"]
+  }
+}
+
+Table "fnce"."tipo_aerogenerador" {
+  "id_tipo_aerogenerador" INTEGER [not null]
+  "nombre" "VARCHAR2 (200 CHAR)"
+  "fabricante" "VARCHAR2 (250 CHAR)"
+  "modelo" "VARCHAR2 (250 CHAR)"
+  "potencia_nominal_kw" "NUMBER (10,3)"
+  "diametro_rotor_m" "NUMBER (10,3)"
+  "activo" "CHAR (1)"
+  "plataforma" "VARCHAR2 (250)"
+  "velocidad_entrada_ms" "NUMBER (10,3)"
+  "velocidad_nominal_ms" "NUMBER (10,3)"
+  "velocidad_corte_ms" "NUMBER (10,3)"
+  "palas" INTEGER
+  "altura_hub_m" "VARCHAR2 (250 CHAR)"
+  "tipo_generador" "VARCHAR2 (250 CHAR)"
+  "tipo_torre" "VARCHAR2 (250 CHAR)"
+
+  Indexes {
+    id_tipo_aerogenerador [pk, name: "pk_tipo_aerogenerador"]
+  }
+}
+
+Table "fnce"."tipo_curva" {
+  "id_tipo_curva" INTEGER [not null]
+  "nombre" "VARCHAR2 (250 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+
+  Indexes {
+    id_tipo_curva [pk, name: "pk_tipo_curva"]
+  }
+}
+
+Table "fnce"."tipo_recurso" {
+  "id_tipo_recurso" INTEGER [not null]
+  "nombre_recurso" "VARCHAR2 (200 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+
+  Indexes {
+    id_tipo_recurso [pk, name: "pk_tipo_recurso"]
+  }
+}
+
+Table "fnce"."transformador" {
+  "id_transformador" INTEGER [not null]
+  "codigo_transformador" "VARCHAR2 (10 CHAR)"
+  "nombre_transformador" "VARCHAR2 (250 CHAR)"
+  "fecha_inicio" DATE
+  "fecha_fin" DATE
+  "resistencia_pu" "NUMBER (15,10)"
+  "reactancia_pu" "NUMBER (15,10)"
+  "potencia_nominal_mva" INTEGER
+  "relacion_tomas_base" "NUMBER (10,5)"
+  "id_barra1" INTEGER [not null]
+  "id_barra2" INTEGER [not null]
+
+  Indexes {
+    id_transformador [pk, name: "pk_transformador"]
+  }
+}
+
+Table "fnce"."unidad" {
+  "id_unidad" INTEGER [not null]
+  "unidad" "VARCHAR2 (250 CHAR)"
+  "simbolo" "VARCHAR2 (250 CHAR)"
+  "unidad_base" INTEGER
+  "factor" "NUMBER (20,15)"
+  "desplazamiento" "NUMBER (20,15)"
+  "id_magnitud" INTEGER [not null]
+
+  Indexes {
+    id_unidad [pk, name: "pk_unidad"]
+  }
+}
+
+Table "fnce"."variable" {
+  "id_variable" INTEGER [not null]
+  "nombre_variable" "VARCHAR2 (250 CHAR)"
+  "simbolo" "VARCHAR2 (50 CHAR)"
+  "unidad_base" "VARCHAR2 (10 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "norma" "VARCHAR2 (250 CHAR)"
+  "id_dimension" INTEGER [not null]
+  "id_magnitud" INTEGER [not null]
+  "id_unidad" INTEGER [not null]
+  "id_prefijo" INTEGER [not null]
+
+  Indexes {
+    id_variable [pk, name: "pk_variables"]
+  }
+}
+
+Table "fnce"."zona_factible" {
+  "id_zona_factible" INTEGER [not null]
+  "nombre" "CHAR (200 CHAR)"
+  "descripcion" "VARCHAR2 (1000 CHAR)"
+  "poligono" geometry
+
+  Indexes {
+    id_zona_factible [pk, name: "pk_zona_factible"]
+  }
+}
+
+Table "multicriteria"."projects" {
+  "id" INTEGER [not null]
+  "name" "VARCHAR2 (100 CHAR)"
+  "description" "VARCHAR2 (250 CHAR)"
+  "user_id" INTEGER [not null]
+  "created_at" DATE
+  "updated_at" DATE
+
+  Indexes {
+    id [pk, name: "projects_pkey"]
+  }
+}
+
+Table "multicriteria"."scenarios" {
+  "id" INTEGER [not null]
+  "proyecto_id" INTEGER [not null]
+  "nombre" "VARCHAR2 (100 CHAR)"
+  "created_at" TIMESTAMP
+  "job_id" INTEGER
+  "department" "VARCHAR2 (100 CHAR)"
+  "energy_type" "VARCHAR2 (100 CHAR)"
+  "scale" "VARCHAR2 (100 CHAR)"
+  "wind_height" NUMBER
+  "analysis_zone" "VARCHAR2 (100 CHAR)"
+
+  Indexes {
+    id [pk, name: "scenarios_pkey"]
+  }
+}
+
+Table "multicriteria"."users" {
+  "id" INTEGER [not null]
+  "email" "VARCHAR2 (320 CHAR)"
+  "hashed_password" "VARCHAR2 (1024 CHAR)"
+  "is_active" "CHAR (1)"
+  "is_superuser" "CHAR (1)"
+  "is_verified" "CHAR (1)"
+
+  Indexes {
+    id [pk, name: "users_pkey"]
+  }
+}
+
+Ref "fk_analisis_eolica_escenario":"fnce"."escenario"."id_escenario" <? "fnce"."analisis_eolica"."id_escenario"
+
+Ref "fk_analisis_eolica_parametro_analisis_eolica":"fnce"."analisis_eolica"."id_analisis_eolica" <? "fnce"."analisis_eolica_parametro"."id_analisis_eolica"
+
+Ref "fk_analisis_eolica_parametro_parametro":"fnce"."parametro"."id_parametro" <? "fnce"."analisis_eolica_parametro"."id_parametro"
+
+Ref "fk_area_padre":"fnce"."area_electrica"."id_area_electrica" <? "fnce"."area_electrica"."id_area_padre"
+
+Ref "fk_barra_nivel_tension":"fnce"."nivel_tension"."id_nivel_tension" <? "fnce"."barra"."id_nivel_tension"
+
+Ref "fk_barra_subestacion":"fnce"."subestacion"."id_subestacion" <? "fnce"."barra"."id_subestacion"
+
+Ref "fk_carga_barra":"fnce"."barra"."id_barra" <? "fnce"."carga"."id_barra"
+
+Ref "fk_compensacion_shunt_barra":"fnce"."barra"."id_barra" <? "fnce"."compensacion_shunt"."id_barra"
+
+Ref "fk_costo_escenario":"fnce"."escenario"."id_escenario" <? "fnce"."costo"."id_escenario"
+
+Ref "fk_costo_parametro":"fnce"."parametro"."id_parametro" <? "fnce"."costo"."id_parametro"
+
+Ref "fk_curva_dato_curva":"fnce"."curva"."id_curva" <? "fnce"."curva_dato"."id_curva"
+
+Ref "fk_curva_tipo_aerogenerador":"fnce"."tipo_aerogenerador"."id_tipo_aerogenerador" <? "fnce"."curva"."id_tipo_aerogenerador"
+
+Ref "fk_curva_tipo_curva":"fnce"."tipo_curva"."id_tipo_curva" <? "fnce"."curva"."id_tipo_curva"
+
+Ref "fk_curva_variable_x":"fnce"."variable"."id_variable" <? "fnce"."curva"."id_variable_x"
+
+Ref "fk_curva_variable_y":"fnce"."variable"."id_variable" <? "fnce"."curva"."id_variable_y"
+
+Ref "fk_distribucion_eolica_analisis_eolica":"fnce"."analisis_eolica"."id_analisis_eolica" <? "fnce"."distribucion_eolica"."id_analisis_eolica"
+
+Ref "fk_distribucion_eolica_parque_eolico":"fnce"."parque_eolico"."id_parque_eolico" <? "fnce"."distribucion_eolica"."id_parque_eolico"
+
+Ref "fk_distribucion_eolica_scenarios":"multicriteria"."scenarios"."id" <? "fnce"."distribucion_eolica"."id_scenario"
+
+Ref "fk_distribucion_eolica_tipo_aerogenerador":"fnce"."tipo_aerogenerador"."id_tipo_aerogenerador" <? "fnce"."distribucion_eolica"."id_tipo_aerogenerador"
+
+Ref "fk_distribucion_eolica_zona_factible":"fnce"."zona_factible"."id_zona_factible" <? "fnce"."distribucion_eolica"."id_zona_factible"
+
+Ref "fk_escenario_parametro_escenario":"fnce"."escenario"."id_escenario" <? "fnce"."escenario_parametro"."id_escenario"
+
+Ref "fk_escenario_parametro_parametro":"fnce"."parametro"."id_parametro" <? "fnce"."escenario_parametro"."id_parametro"
+
+Ref "fk_escenario_usuario":"multicriteria"."users"."id" <? "fnce"."escenario"."id_usuario"
+
+Ref "fk_estado_parque_eolico_estado":"fnce"."estado"."id_estado" <? "fnce"."estado_parque_eolico"."id_estado"
+
+Ref "fk_estado_parque_eolico_parque_eolico":"fnce"."parque_eolico"."id_parque_eolico" <? "fnce"."estado_parque_eolico"."id_parque_eolico"
+
+Ref "fk_linea_transmision_barra1":"fnce"."barra"."id_barra" <? "fnce"."linea_transmision"."id_barra1"
+
+Ref "fk_linea_transmision_barra2":"fnce"."barra"."id_barra" <? "fnce"."linea_transmision"."id_barra2"
+
+Ref "fk_parametro_dimension":"fnce"."dimension"."id_dimension" <? "fnce"."parametro"."id_dimension"
+
+Ref "fk_parque_eolico_planta":"fnce"."planta"."id_planta" ?<? "fnce"."parque_eolico"."id_planta_generacion"
+
+Ref "fk_parque_eolico_projects":"multicriteria"."projects"."id" <? "fnce"."parque_eolico"."id_proyecto"
+
+Ref "fk_planta_area_planta":"fnce"."planta"."id_planta" <? "fnce"."planta_area"."id_planta"
+
+Ref "fk_planta_categoria_escala":"fnce"."categoria_escala"."id_categoria_escala" <? "fnce"."planta"."id_categoria_escala"
+
+Ref "fk_planta_categoria_generacion":"fnce"."categoria_generacion"."id_categoria_generacion" <? "fnce"."planta"."id_categoria_generacion"
+
+Ref "fk_planta_estado":"fnce"."estado"."id_estado" <? "fnce"."planta"."id_estado"
+
+Ref "fk_planta_tecnologia_generacion":"fnce"."tecnologia_generacion"."id_tecnologia_generacion" <? "fnce"."planta"."id_tecnologia_generacion"
+
+Ref "fk_planta_tipo_recurso":"fnce"."tipo_recurso"."id_tipo_recurso" <? "fnce"."planta"."id_tipo_recurso"
+
+Ref "fk_resultado_escenario":"fnce"."escenario"."id_escenario" <? "fnce"."resultado"."id_escenario"
+
+Ref "fk_resultado_parametro":"fnce"."parametro"."id_parametro" <? "fnce"."resultado"."id_parametros"
+
+Ref "fk_subestacion_area":"fnce"."area_electrica"."id_area_electrica" <? "fnce"."subestacion"."id_area"
+
+Ref "fk_tecnologia_generacion_padre":"fnce"."tecnologia_generacion"."id_tecnologia_generacion" ?<? "fnce"."tecnologia_generacion"."id_tecnologia_generacion_padre"
+
+Ref "fk_transformador_barra1":"fnce"."barra"."id_barra" <? "fnce"."transformador"."id_barra1"
+
+Ref "fk_transformador_barra2":"fnce"."barra"."id_barra" <? "fnce"."transformador"."id_barra2"
+
+Ref "fk_unidad_magnitud":"fnce"."magnitud"."id_magnitud" <? "fnce"."unidad"."id_magnitud"
+
+Ref "fk_variable_prefijo_si":"fnce"."prefijo_si"."id_prefijo" <? "fnce"."variable"."id_prefijo"
+
+Ref "fk_variable_unidad_FK":"fnce"."unidad"."id_unidad" <? "fnce"."variable"."id_unidad"
+
+Ref "fk_variables_dimension":"fnce"."dimension"."id_dimension" <? "fnce"."variable"."id_dimension"
+
+Ref "fk_variables_magnitud":"fnce"."magnitud"."id_magnitud" <? "fnce"."variable"."id_magnitud"
+
+Ref "projects_user_id_fkey":"multicriteria"."users"."id" <? "multicriteria"."projects"."user_id"
+
+Ref "scenarios_proyecto_id_fkey":"multicriteria"."projects"."id" <? "multicriteria"."scenarios"."proyecto_id"
+
+Tablegroup AEROGENERADORES {
+  "fnce"."tipo_curva"
+  "fnce"."curva"
+  "fnce"."curva_dato"
+
+  "fnce"."tipo_aerogenerador"
+  "fnce"."estado_parque_eolico"
+
+  "fnce"."zona_factible"
+  "fnce"."distribucion_eolica"
+  "fnce"."parque_eolico"
+
+  "fnce"."analisis_eolica"
+  "fnce"."analisis_eolica_parametro"
+}
+
+Tablegroup ELECTRICO {
+  "fnce"."linea_transmision"
+  "fnce"."transformador"
+  // "fnce"."planta_barra"
+
+  "fnce"."nivel_tension"
+  "fnce"."barra"
+
+  "fnce"."compensacion_shunt"
+  "fnce"."carga"
+  "fnce"."area_electrica"
+  "fnce"."subestacion"
+}
+
+Tablegroup GENERAL {
+  "fnce"."estado"
+  // "fnce"."estado_planta"
+  "fnce"."planta_area"
+  "fnce"."tecnologia_generacion"
+
+  "fnce"."planta"
+  "fnce"."tipo_recurso"
+  "fnce"."categoria_escala"
+  "fnce"."categoria_generacion"
+}
+
+Tablegroup PLATFORM {
+  "multicriteria"."scenarios"
+  "multicriteria"."projects"
+  "multicriteria"."users"
+}
+
+Tablegroup VARIABLES {
+  "fnce"."variable"
+
+  "fnce"."magnitud"
+  "fnce"."prefijo_si"
+  "fnce"."dimension"
+
+  "fnce"."unidad"
+}
+
+Tablegroup ESCENARIOS {
+  "fnce"."escenario"
+  "fnce"."escenario_parametro"
+  "fnce"."parametro"
+  "fnce"."costo"
+  "fnce"."resultado"
+}
